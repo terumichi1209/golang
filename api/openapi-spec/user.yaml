@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: User API
+  version: 0.1.0
+paths:
+  /api/users:
+    post:
+      summary: create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "石橋"
+                email:
+                  type: string
+                  example: "terumichi1209@gmail.com"
+                passward:
+                  type: string
+                  example: "passward"
+      responses: 
+        '201':
+          description: Created
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "氏名は必須です"
+                      email:
+                        type: string
+                        example: "登録済みのアドレスです"
+                      password:
+                        type: string
+                        example: "パスワードは英数字8文字以上必須です"

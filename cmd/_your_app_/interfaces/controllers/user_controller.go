@@ -3,6 +3,7 @@ package controllers
 import (
 	"go-sample/cmd/_your_app_/domain"
 	"go-sample/cmd/_your_app_/interfaces/gateways"
+	"go-sample/cmd/_your_app_/interfaces/requests"
 	"go-sample/cmd/_your_app_/usecase"
 	"net/http"
 
@@ -33,6 +34,11 @@ func (controller *UserController) List(c echo.Context) error {
 
 // Create ユーザ作成
 func (controller *UserController) Create(c echo.Context) error {
+	request := requests.CreateUserRequest{}
+	c.Bind(&request)
+	if err := c.Validate(request); err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, err.Error())
+	}
 	user := domain.User{}
 	c.Bind(&user)
 	controller.Interactor.Add(user)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-sample/cmd/_your_app_/infrastructure"
+	"go-sample/pkg/validator"
 
 	"github.com/labstack/echo"
 )
@@ -16,6 +17,7 @@ func main() {
 	// TODO マイグレーションファイルに分ける
 	dbinit()
 	e := echo.New()
+	e.Validator = validator.Init()
 	infrastructure.Init(e)
 	e.Logger.Fatal(e.Start(port))
 }

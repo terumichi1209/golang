@@ -7,8 +7,8 @@ import (
 )
 
 // Init test
-func Init(e *echo.Echo) {
-	userController := controllers.NewUserController(NewSQLHandler())
+func Init(e *echo.Echo, dsn string) {
+	userController := controllers.NewUserController(NewSQLHandler(dsn))
 
 	e.GET("/users", userController.List)
 	e.POST("/users", userController.Create)

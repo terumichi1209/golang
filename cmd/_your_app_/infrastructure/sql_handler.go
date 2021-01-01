@@ -13,8 +13,7 @@ type SQLHandler struct {
 }
 
 // NewSQLHandler test
-func NewSQLHandler() gateways.SQLHandler {
-	dsn := "root:password@tcp(go_sample)/go_sample?charset=utf8mb4&parseTime=True&loc=Local"
+func NewSQLHandler(dsn string) gateways.SQLHandler {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err.Error)

@@ -6,17 +6,32 @@ services:
     volumes:
       - ./../../:/usr/local/go/src/go-sample # マウントディレクトリ指定
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     container_name: go_sample
     volumes:
-      # mysqlの設定
-      - ./mysql/conf:/etc/mysql/conf.d
-      - ./mysql/data:/var/lib/mysql
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    ports:
-      - 3306:3306
+      - db-store:/var/lib/mysql
+      - ./logs:/var/log/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
       MYSQL_DATABASE: go_sample
-      MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
       TZ: "Asia/Tokyo"
+    ports:
+      - 13306:3306
+  testdb:
+    image: mysql:8.0
+    volumes:
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    container_name: go_sample_test
+    tmpfs:
+      - /var/lib/mysql
+      - /var/log/mysql
+    environment:
+      MYSQL_DATABASE: go_sample_test
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      TZ: "Asia/Tokyo"
+
+volumes:
+  db-store:
